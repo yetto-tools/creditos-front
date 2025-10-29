@@ -156,4 +156,15 @@ export const saldoService = {
     api.get(`/saldo/historico/${idMoneda}?dias=${dias}`),
 };
 
+// ============================================================================
+// EXPORTS ALTERNATIVOS (para compatibilidad con componentes)
+// ============================================================================
+
+export const authAPI = authService;
+export const usuariosAPI = usuarioService;
+export const monedasAPI = monedaService;
+export const inversionesAPI = inversionService;
+export const prestamosAPI = prestamoService;
+export const saldoAPI = saldoService;
+
 export default api;
