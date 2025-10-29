@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, AlertCircle, Loader } from 'lucide-react';
-import { authAPI } from '../services/api';
+import { authService } from '../services/api';
 
 export default function LoginPage({ onLogin }) {
   const [formData, setFormData] = useState({
@@ -27,17 +27,20 @@ export default function LoginPage({ onLogin }) {
     setError('');
 
     try {
-      const response = await authAPI.login(formData.usuario, formData.contrasena);
-      
-      onLogin(response.token, {
-        idUsuario: response.idUsuario,
-        usuario: response.usuario,
-        nombreCompleto: response.nombreCompleto,
+      const response = await authService.login(formData.usuario, formData.contrasena);
+
+      // La API responde con: { exitoso, mensaje, datos: { token, idUsuario, usuario, nombreCompleto }, codigo }
+      const { datos } = response.data;
+
+      onLogin(datos.token, {
+        idUsuario: datos.idUsuario,
+        usuario: datos.usuario,
+        nombreCompleto: datos.nombreCompleto,
       });
-      
+
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
+      setError(err.response?.data?.mensaje || err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
     } finally {
       setLoading(false);
     }

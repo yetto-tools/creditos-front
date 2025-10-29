@@ -24,7 +24,10 @@ export default function Login() {
 
     try {
       const response = await authService.login(usuario, contrasena);
-      const { token, idUsuario, nombreCompleto } = response.data;
+
+      // La API responde con: { exitoso, mensaje, datos: { token, idUsuario, usuario, nombreCompleto }, codigo }
+      const { datos } = response.data;
+      const { token, idUsuario, nombreCompleto } = datos;
 
       // Guardar token y datos en localStorage
       localStorage.setItem('token', token);
@@ -37,7 +40,7 @@ export default function Login() {
       // Redirigir al dashboard
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al iniciar sesión');
+      setError(err.response?.data?.mensaje || err.message || 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }

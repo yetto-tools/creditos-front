@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, AlertCircle, Loader } from 'lucide-react';
-import { authAPI } from '../services/api';
+import { authService } from '../services/api';
 
 export default function RegisterPage({ onRegister }) {
   const [formData, setFormData] = useState({
@@ -69,7 +69,7 @@ export default function RegisterPage({ onRegister }) {
     setLoading(true);
 
     try {
-      const response = await authAPI.register(
+      const response = await authService.registro(
         formData.usuario,
         formData.contrasena,
         formData.confirmarContrasena,
@@ -77,15 +77,18 @@ export default function RegisterPage({ onRegister }) {
         formData.correoElectronico
       );
 
-      onRegister(response.token, {
-        idUsuario: response.idUsuario,
-        usuario: response.usuario,
-        nombreCompleto: response.nombreCompleto,
+      // La API responde con: { exitoso, mensaje, datos: { token, idUsuario, usuario, nombreCompleto }, codigo }
+      const { datos } = response.data;
+
+      onRegister(datos.token, {
+        idUsuario: datos.idUsuario,
+        usuario: datos.usuario,
+        nombreCompleto: datos.nombreCompleto,
       });
 
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Error al registrarse. Intenta nuevamente.');
+      setError(err.response?.data?.mensaje || err.message || 'Error al registrarse. Intenta nuevamente.');
     } finally {
       setLoading(false);
     }
