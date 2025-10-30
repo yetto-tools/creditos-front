@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Banknote, Plus, Trash2, Edit2, Eye, Loader } from 'lucide-react';
 import Card from '../components/Card';
 import { prestamosAPI, monedasAPI } from '../services/api';
+import PrestamoDetailModal from '../components/PrestamoDetailModal';
+import PrestamoEditModal from '../components/PrestamoEditModal';
 
 export default function Prestamos() {
   const [prestamos, setPrestamos] = useState([]);
@@ -18,6 +20,9 @@ export default function Prestamos() {
     modalidadPago: 'MENSUAL',
     observaciones: '',
   });
+  const [selectedPrestamo, setSelectedPrestamo] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -84,6 +89,21 @@ const fetchData = async () => {
   const getMonedaNombre = (idMoneda) => {
     const moneda = monedas.find((m) => m.idMoneda === idMoneda);
     return moneda ? moneda.nombreMoneda : 'Desconocida';
+  };
+
+  const handleViewDetail = (prestamo) => {
+    setSelectedPrestamo(prestamo);
+    setShowDetailModal(true);
+  };
+
+  const handleEdit = (prestamo) => {
+    setSelectedPrestamo(prestamo);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = async (id, data) => {
+    await prestamosAPI.update(id, data);
+    await fetchData();
   };
 
   if (loading) {
@@ -320,15 +340,24 @@ const fetchData = async () => {
                   </div>
 
                   <div className="flex space-x-2 ml-4">
-                    <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                    <button
+                      onClick={() => handleViewDetail(pres)}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                      title="Ver detalles"
+                    >
                       <Eye size={18} />
                     </button>
-                    <button className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition">
+                    <button
+                      onClick={() => handleEdit(pres)}
+                      className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition"
+                      title="Editar"
+                    >
                       <Edit2 size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(pres.idPrestamo)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                      title="Eliminar"
                     >
                       <Trash2 size={18} />
                     </button>
@@ -338,6 +367,22 @@ const fetchData = async () => {
             ))
           )}
         </div>
+
+        {/* Modales */}
+        <PrestamoDetailModal
+          isOpen={showDetailModal}
+          onClose={() => setShowDetailModal(false)}
+          prestamo={selectedPrestamo}
+          monedaNombre={selectedPrestamo ? getMonedaNombre(selectedPrestamo.idMoneda) : ''}
+        />
+
+        <PrestamoEditModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          prestamo={selectedPrestamo}
+          monedas={monedas}
+          onSave={handleSaveEdit}
+        />
       </div>
     </main>
   );
