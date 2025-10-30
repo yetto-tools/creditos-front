@@ -38,7 +38,7 @@ export default function Perfil({ user }) {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 flex items-center space-x-2">
-            <User className="text-indigo-600" />
+            <User className="text-teal-600" />
             <span>Mi Perfil</span>
           </h1>
           <p className="text-gray-600 mt-2">Gestiona la información de tu cuenta</p>
@@ -84,7 +84,7 @@ export default function Perfil({ user }) {
             <div className="space-y-4">
               <div>
                 <div className="flex items-center space-x-2 mb-2">
-                  <Mail size={16} className="text-indigo-600" />
+                  <Mail size={16} className="text-teal-600" />
                   <p className="text-sm text-gray-600">Correo Electrónico</p>
                 </div>
                 <p className="font-semibold text-gray-800">{user?.correoElectronico || 'No registrado'}</p>
@@ -92,7 +92,7 @@ export default function Perfil({ user }) {
 
               <button
                 onClick={() => setEditMode(true)}
-                className="w-full mt-4 bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                className="w-full mt-4 bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
               >
                 Editar Información
               </button>
@@ -108,7 +108,7 @@ export default function Perfil({ user }) {
                   name="nombreCompleto"
                   value={formData.nombreCompleto}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 />
               </div>
 
@@ -121,14 +121,14 @@ export default function Perfil({ user }) {
                   name="correoElectronico"
                   value={formData.correoElectronico}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 />
               </div>
 
               <div className="flex space-x-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                  className="flex-1 bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
                 >
                   Guardar Cambios
                 </button>
@@ -160,7 +160,7 @@ export default function Perfil({ user }) {
                 value={formData.contrasenaActual}
                 onChange={handleChange}
                 placeholder="Ingresa tu contraseña actual"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
               />
             </div>
 
@@ -177,7 +177,7 @@ export default function Perfil({ user }) {
                 value={formData.contraseñaNueva}
                 onChange={handleChange}
                 placeholder="Ingresa tu nueva contraseña"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
               />
             </div>
 
@@ -194,7 +194,7 @@ export default function Perfil({ user }) {
                 value={formData.confirmarContrasena}
                 onChange={handleChange}
                 placeholder="Repite tu nueva contraseña"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
               />
             </div>
 

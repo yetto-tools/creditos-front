@@ -30,7 +30,7 @@ export default function Usuarios() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-center h-96">
             <div className="text-center">
-              <Loader size={32} className="animate-spin text-indigo-600 mx-auto mb-4" />
+              <Loader size={32} className="animate-spin text-teal-600 mx-auto mb-4" />
               <p className="text-gray-600">Cargando usuarios...</p>
             </div>
           </div>
@@ -45,7 +45,7 @@ export default function Usuarios() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 flex items-center space-x-2">
-            <Users className="text-indigo-600" />
+            <Users className="text-teal-600" />
             <span>Usuarios del Sistema</span>
           </h1>
           <p className="text-gray-600 mt-2">Visualiza todos los usuarios registrados</p>
@@ -128,7 +128,7 @@ export default function Usuarios() {
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
             <div className="text-center">
-              <p className="text-4xl font-bold text-indigo-600 mb-2">{usuarios.length}</p>
+              <p className="text-4xl font-bold text-teal-600 mb-2">{usuarios.length}</p>
               <p className="text-gray-600">Total de Usuarios</p>
             </div>
           </Card>

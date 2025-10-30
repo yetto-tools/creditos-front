@@ -159,10 +159,10 @@ export default function Login() {
                 Credenciales de prueba:
               </p>
               <p className="text-xs text-gray-500 text-center">
-                Usuario: USR_PRG2_A
+                Usuario: admin  
               </p>
               <p className="text-xs text-gray-500 text-center">
-                Contraseña: umg123
+                Contraseña: 123456
               </p>
             </div>
           </>

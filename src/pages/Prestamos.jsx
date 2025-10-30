@@ -89,7 +89,7 @@ export default function Prestamos() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-center h-96">
             <div className="text-center">
-              <Loader size={32} className="animate-spin text-indigo-600 mx-auto mb-4" />
+              <Loader size={32} className="animate-spin text-teal-600 mx-auto mb-4" />
               <p className="text-gray-600">Cargando préstamos...</p>
             </div>
           </div>

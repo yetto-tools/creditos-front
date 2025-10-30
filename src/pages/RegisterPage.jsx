@@ -77,7 +77,7 @@ export default function RegisterPage({ onRegister }) {
         formData.correoElectronico
       );
 
-      onRegister(response.token, {
+      onRegister(response.datos.token, {
         idUsuario: response.idUsuario,
         usuario: response.usuario,
         nombreCompleto: response.nombreCompleto,
@@ -92,11 +92,11 @@ export default function RegisterPage({ onRegister }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-block w-16 h-16 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">
+          <div className="inline-block w-16 h-16 bg-gradient-to-br from-teal-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">
             <span className="text-white font-bold text-2xl">B</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-800">Banco API</h1>
@@ -132,7 +132,7 @@ export default function RegisterPage({ onRegister }) {
                 value={formData.usuario}
                 onChange={handleChange}
                 placeholder="Ej: usuario123"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 disabled={loading}
               />
             </div>
@@ -151,7 +151,7 @@ export default function RegisterPage({ onRegister }) {
                 value={formData.nombreCompleto}
                 onChange={handleChange}
                 placeholder="Ej: Juan Pérez García"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 disabled={loading}
               />
             </div>
@@ -170,7 +170,7 @@ export default function RegisterPage({ onRegister }) {
                 value={formData.correoElectronico}
                 onChange={handleChange}
                 placeholder="tu@email.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 disabled={loading}
               />
             </div>
@@ -189,7 +189,7 @@ export default function RegisterPage({ onRegister }) {
                 value={formData.contrasena}
                 onChange={handleChange}
                 placeholder="Mínimo 6 caracteres"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 disabled={loading}
               />
             </div>
@@ -208,7 +208,7 @@ export default function RegisterPage({ onRegister }) {
                 value={formData.confirmarContrasena}
                 onChange={handleChange}
                 placeholder="Repite tu contraseña"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 disabled={loading}
               />
             </div>
@@ -217,7 +217,7 @@ export default function RegisterPage({ onRegister }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {loading ? (
                 <>
@@ -234,7 +234,7 @@ export default function RegisterPage({ onRegister }) {
           <div className="mt-6 text-center border-t pt-4">
             <p className="text-gray-600">
               ¿Ya tienes cuenta?{' '}
-              <Link to="/login" className="text-indigo-600 font-semibold hover:underline">
+              <Link to="/login" className="text-teal-600 font-semibold hover:underline">
                 Inicia sesión aquí
               </Link>
             </p>

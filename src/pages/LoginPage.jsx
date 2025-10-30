@@ -23,32 +23,70 @@ export default function LoginPage({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validación básica
+    if (!formData.usuario.trim()) {
+      setError('Por favor ingresa tu usuario');
+      return;
+    }
+    if (!formData.contrasena.trim()) {
+      setError('Por favor ingresa tu contraseña');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
+      console.log('Intentando login con:', formData.usuario);
+      
       const response = await authAPI.login(formData.usuario, formData.contrasena);
       
-      onLogin(response.token, {
+      console.log('Login exitoso:', response);
+      
+      if (!response || !response.datos.token) {
+        throw new Error('Respuesta inválida del servidor');
+      }
+
+      // Guardar datos
+      onLogin(response.datos.token, {
         idUsuario: response.idUsuario,
         usuario: response.usuario,
         nombreCompleto: response.nombreCompleto,
       });
       
-      navigate('/');
+      // Limpiar formulario
+      setFormData({
+        usuario: '',
+        contrasena: '',
+      });
+
+      // Redirigir después de un pequeño delay
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 300);
+
     } catch (err) {
-      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
+      console.error('Error de login:', err);
+      setError(
+        err.message || 
+        'Error al iniciar sesión. Verifica tus credenciales.'
+      );
+      setFormData((prev) => ({
+        ...prev,
+        contrasena: '',
+      }));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-block w-16 h-16 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">
+          <div className="inline-block w-16 h-16 bg-gradient-to-br from-teal-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">
             <span className="text-white font-bold text-2xl">B</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-800">Banco API</h1>
@@ -69,7 +107,7 @@ export default function LoginPage({ onLogin }) {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {/* Usuario */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -84,9 +122,10 @@ export default function LoginPage({ onLogin }) {
                 value={formData.usuario}
                 onChange={handleChange}
                 placeholder="Ingresa tu usuario"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
                 required
                 disabled={loading}
+                autoComplete="username"
               />
             </div>
 
@@ -104,17 +143,18 @@ export default function LoginPage({ onLogin }) {
                 value={formData.contrasena}
                 onChange={handleChange}
                 placeholder="Ingresa tu contraseña"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
                 required
                 disabled={loading}
+                autoComplete="current-password"
               />
             </div>
 
             {/* Botón Submit */}
             <button
-              type="submit"
+              onSubmit={handleSubmit}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {loading ? (
                 <>
@@ -131,7 +171,7 @@ export default function LoginPage({ onLogin }) {
           <div className="mt-6 text-center border-t pt-4">
             <p className="text-gray-600">
               ¿No tienes cuenta?{' '}
-              <Link to="/registro" className="text-indigo-600 font-semibold hover:underline">
+              <Link to="/registro" className="text-teal-600 font-semibold hover:underline">
                 Regístrate aquí
               </Link>
             </p>
@@ -140,8 +180,8 @@ export default function LoginPage({ onLogin }) {
           {/* Credenciales de prueba */}
           <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <p className="text-sm font-semibold text-blue-900 mb-2">Credenciales de Prueba:</p>
-            <p className="text-sm text-blue-800">Usuario: <span className="font-mono">USR_PRG2_A</span></p>
-            <p className="text-sm text-blue-800">Contraseña: <span className="font-mono">umg123</span></p>
+            <p className="text-sm text-blue-800">Usuario: <span className="font-mono">admin</span></p>
+            <p className="text-sm text-blue-800">Contraseña: <span className="font-mono">123456</span></p>
           </div>
         </div>
       </div>

@@ -87,7 +87,7 @@ export default function Inversiones() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-center h-96">
             <div className="text-center">
-              <Loader size={32} className="animate-spin text-indigo-600 mx-auto mb-4" />
+              <Loader size={32} className="animate-spin text-teal-600 mx-auto mb-4" />
               <p className="text-gray-600">Cargando inversiones...</p>
             </div>
           </div>
@@ -103,14 +103,14 @@ export default function Inversiones() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold text-gray-800 flex items-center space-x-2">
-              <TrendingUp className="text-indigo-600" />
+              <TrendingUp className="text-teal-600" />
               <span>Inversiones</span>
             </h1>
             <p className="text-gray-600 mt-2">Gestiona tus inversiones y proyecta tus ganancias</p>
           </div>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition flex items-center space-x-2"
+            className="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition flex items-center space-x-2"
           >
             <Plus size={20} />
             <span>Nueva Inversión</span>
@@ -134,7 +134,7 @@ export default function Inversiones() {
                     name="idMoneda"
                     value={formData.idMoneda}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                     required
                   >
                     <option value="">Selecciona una moneda</option>
@@ -158,7 +158,7 @@ export default function Inversiones() {
                     placeholder="0.00"
                     step="0.01"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                   />
                 </div>
 
@@ -174,7 +174,7 @@ export default function Inversiones() {
                     placeholder="0.00"
                     step="0.01"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                   />
                 </div>
 
@@ -187,7 +187,7 @@ export default function Inversiones() {
                     onChange={handleChange}
                     placeholder="0"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                   />
                 </div>
 
@@ -199,7 +199,7 @@ export default function Inversiones() {
                     name="modalidadPago"
                     value={formData.modalidadPago}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                   >
                     <option value="MENSUAL">Mensual</option>
                     <option value="FINAL">Final</option>
@@ -215,14 +215,14 @@ export default function Inversiones() {
                   onChange={handleChange}
                   placeholder="Notas adicionales (opcional)"
                   rows="3"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
                 />
               </div>
 
               <div className="flex space-x-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                  className="flex-1 bg-teal-600 text-white py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
                 >
                   Crear Inversión
                 </button>
@@ -256,8 +256,8 @@ export default function Inversiones() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-3">
-                      <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-                        <TrendingUp size={20} className="text-indigo-600" />
+                      <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                        <TrendingUp size={20} className="text-teal-600" />
                       </div>
                       <div>
                         <h3 className="text-lg font-semibold text-gray-800">

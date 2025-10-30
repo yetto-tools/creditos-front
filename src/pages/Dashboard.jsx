@@ -99,7 +99,7 @@ export default function Dashboard({ user }) {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}`}
-              color="from-blue-400 to-indigo-600"
+              color="from-blue-400 to-teal-600"
             />
             <StatCard
               icon={Banknote}
@@ -144,7 +144,7 @@ export default function Dashboard({ user }) {
             <div className="space-y-2">
               <a
                 href="/inversiones"
-                className="block w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 rounded-lg text-center font-semibold hover:shadow-lg transition"
+                className="block w-full bg-gradient-to-r from-blue-500 to-teal-600 text-white py-2 rounded-lg text-center font-semibold hover:shadow-lg transition"
               >
                 + Nueva Inversión
               </a>

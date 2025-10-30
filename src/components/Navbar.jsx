@@ -19,13 +19,13 @@ export default function Navbar({ user, onLogout }) {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg z-40">
+    <nav className="fixed top-0 left-0 right-0 bg-gradient-to-r from-teal-600 to-blue-600 text-white shadow-lg z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-indigo-600 font-bold">B</span>
+              <span className="text-teal-600 font-bold">B</span>
             </div>
             <span className="font-bold text-lg hidden sm:inline">Banco API</span>
           </Link>
@@ -38,7 +38,7 @@ export default function Navbar({ user, onLogout }) {
                 <Link
                   key={item.href}
                   to={item.href}
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition flex items-center space-x-1"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-teal-700 transition flex items-center space-x-1"
                 >
                   <Icon size={16} />
                   <span>{item.label}</span>
@@ -51,7 +51,7 @@ export default function Navbar({ user, onLogout }) {
           <div className="flex items-center space-x-4">
             <Link
               to="/perfil"
-              className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-indigo-700 transition"
+              className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-teal-700 transition"
             >
               <User size={18} />
               <span className="hidden sm:inline text-sm">{user?.nombreCompleto || 'Usuario'}</span>
@@ -68,7 +68,7 @@ export default function Navbar({ user, onLogout }) {
             {/* Menu Mobile */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md hover:bg-indigo-700"
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-md hover:bg-teal-700"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -85,7 +85,7 @@ export default function Navbar({ user, onLogout }) {
                   key={item.href}
                   to={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition flex items-center space-x-2"
+                  className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-teal-700 transition flex items-center space-x-2"
                 >
                   <Icon size={16} />
                   <span>{item.label}</span>
