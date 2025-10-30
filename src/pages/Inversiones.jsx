@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { TrendingUp, Plus, Trash2, Edit2, Eye, Loader } from 'lucide-react';
 import Card from '../components/Card';
 import { inversionesAPI, monedasAPI } from '../services/api';
+import InversionDetailModal from '../components/InversionDetailModal';
+import InversionEditModal from '../components/InversionEditModal';
 
 export default function Inversiones() {
   const [inversiones, setInversiones] = useState([]);
@@ -17,6 +19,9 @@ export default function Inversiones() {
     modalidadPago: 'MENSUAL',
     observaciones: '',
   });
+  const [selectedInversion, setSelectedInversion] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -79,6 +84,21 @@ export default function Inversiones() {
   const getMonedaNombre = (idMoneda) => {
     const moneda = monedas.find((m) => m.idMoneda === idMoneda);
     return moneda ? moneda.nombreMoneda : 'Desconocida';
+  };
+
+  const handleViewDetail = (inversion) => {
+    setSelectedInversion(inversion);
+    setShowDetailModal(true);
+  };
+
+  const handleEdit = (inversion) => {
+    setSelectedInversion(inversion);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = async (id, data) => {
+    await inversionesAPI.update(id, data);
+    await fetchData();
   };
 
   if (loading) {
@@ -301,20 +321,23 @@ export default function Inversiones() {
 
                   <div className="flex space-x-2 ml-4">
                     <button
-                      onClick={() => alert('Ver detalles')}
+                      onClick={() => handleViewDetail(inv)}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                      title="Ver detalles"
                     >
                       <Eye size={18} />
                     </button>
                     <button
-                      onClick={() => alert('Editar')}
+                      onClick={() => handleEdit(inv)}
                       className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition"
+                      title="Editar"
                     >
                       <Edit2 size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(inv.idInversion)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                      title="Eliminar"
                     >
                       <Trash2 size={18} />
                     </button>
@@ -324,6 +347,22 @@ export default function Inversiones() {
             ))
           )}
         </div>
+
+        {/* Modales */}
+        <InversionDetailModal
+          isOpen={showDetailModal}
+          onClose={() => setShowDetailModal(false)}
+          inversion={selectedInversion}
+          monedaNombre={selectedInversion ? getMonedaNombre(selectedInversion.idMoneda) : ''}
+        />
+
+        <InversionEditModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          inversion={selectedInversion}
+          monedas={monedas}
+          onSave={handleSaveEdit}
+        />
       </div>
     </main>
   );

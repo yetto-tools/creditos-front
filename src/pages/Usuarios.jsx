@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Users, Eye, Loader } from 'lucide-react';
 import Card from '../components/Card';
 import { usuariosAPI } from '../services/api';
+import UsuarioDetailModal from '../components/UsuarioDetailModal';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedUsuario, setSelectedUsuario] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
   useEffect(() => {
     fetchUsuarios();
@@ -22,6 +25,11 @@ export default function Usuarios() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleViewDetail = (usuario) => {
+    setSelectedUsuario(usuario);
+    setShowDetailModal(true);
   };
 
   if (loading) {
@@ -112,7 +120,10 @@ export default function Usuarios() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-semibold">
+                      <button
+                        onClick={() => handleViewDetail(usuario)}
+                        className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 font-semibold transition"
+                      >
                         <Eye size={18} />
                         <span>Ver</span>
                       </button>
@@ -149,6 +160,13 @@ export default function Usuarios() {
             </div>
           </Card>
         </div>
+
+        {/* Modal */}
+        <UsuarioDetailModal
+          isOpen={showDetailModal}
+          onClose={() => setShowDetailModal(false)}
+          usuario={selectedUsuario}
+        />
       </div>
     </main>
   );
