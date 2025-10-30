@@ -13,6 +13,17 @@ const getHeaders = () => {
   };
 };
 
+
+const handleUnauthorized = () => {
+  // Limpiar sesión, pero sin refrescar la SPA
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+
+  // Guardar una marca para que el frontend sepa que hay que redirigir
+  sessionStorage.setItem('redirectAfter401', 'true');
+};
+
+
 // Función helper para peticiones
 const apiCall = async (endpoint, options = {}) => {
   try {
@@ -21,24 +32,41 @@ const apiCall = async (endpoint, options = {}) => {
       ...options,
     });
 
+    // Si el token expiró o no es válido
     if (response.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      throw new Error('No autorizado o sesión expirada');
     }
 
-    const data = await response.json();
+    // Intentar parsear JSON, aunque venga vacío
+    const data = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
-      throw new Error(data.message || 'Error en la petición');
+    // Validar estructura esperada
+    if (typeof data !== 'object' || data === null) {
+      throw new Error('Respuesta inválida del servidor');
     }
 
-    return data;
+    // Si el backend devuelve un campo `exitoso: false`
+    if (data.exitoso === false || !response.ok) {
+      throw new Error(data.mensaje || 'Error en la petición');
+    }
+
+    // Si todo va bien, retornar estructura limpia
+    return {
+      exitoso: data.exitoso ?? true,
+      mensaje: data.mensaje || 'Operación exitosa',
+      datos: data.datos ?? null,
+      codigo: data.codigo ?? response.status,
+    };
+
   } catch (error) {
     console.error('API Error:', error);
-    throw error;
+    throw error; // deja que el componente maneje el mensaje
   }
 };
+
+
 
 // ============================================================================
 // AUTH ENDPOINTS

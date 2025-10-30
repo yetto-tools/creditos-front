@@ -152,7 +152,7 @@ export default function LoginPage({ onLogin }) {
 
             {/* Botón Submit */}
             <button
-              onSubmit={handleSubmit}
+              type="submit"
               disabled={loading}
               className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >

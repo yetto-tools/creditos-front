@@ -23,21 +23,24 @@ export default function Prestamos() {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const [pres, mon] = await Promise.all([
-        prestamosAPI.getAll().catch(() => []),
-        monedasAPI.getAll().catch(() => []),
-      ]);
-      setPrestamos(Array.isArray(pres) ? pres : []);
-      setMonedas(Array.isArray(mon) ? mon : []);
-    } catch (err) {
-      setError('Error al cargar préstamos');
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchData = async () => {
+  try {
+    setLoading(true);
+
+    const [presResp, monResp] = await Promise.all([
+      prestamosAPI.getAll().catch(() => ({ datos: [] })),
+      monedasAPI.getAll().catch(() => ({ datos: [] })),
+    ]);
+
+    // Extraer datos reales del backend
+    setPrestamos(Array.isArray(presResp.datos) ? presResp.datos : []);
+    setMonedas(Array.isArray(monResp.datos) ? monResp.datos : []);
+  } catch (err) {
+    setError('Error al cargar préstamos');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,7 +105,7 @@ export default function Prestamos() {
     <main className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 bg-orange-100 rounded-lg p-6">
           <div>
             <h1 className="text-4xl font-bold text-gray-800 flex items-center space-x-2">
               <Banknote className="text-red-600" />
@@ -142,7 +145,7 @@ export default function Prestamos() {
                     <option value="">Selecciona una moneda</option>
                     {monedas.map((m) => (
                       <option key={m.idMoneda} value={m.idMoneda}>
-                        {m.nombreMoneda}
+                        {m.simbolo} - {m.nombreMoneda}
                       </option>
                     ))}
                   </select>

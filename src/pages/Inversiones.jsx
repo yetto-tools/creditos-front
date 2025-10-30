@@ -22,21 +22,25 @@ export default function Inversiones() {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const [inv, mon] = await Promise.all([
-        inversionesAPI.getAll().catch(() => []),
-        monedasAPI.getAll().catch(() => []),
-      ]);
-      setInversiones(Array.isArray(inv) ? inv : []);
-      setMonedas(Array.isArray(mon) ? mon : []);
-    } catch (err) {
-      setError('Error al cargar inversiones');
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchData = async () => {
+  try {
+    setLoading(true);
+
+    const [invResp, monResp] = await Promise.all([
+      inversionesAPI.getAll().catch(() => ({ datos: [] })),
+      monedasAPI.getAll().catch(() => ({ datos: [] })),
+    ]);
+
+    // Extraer el array desde la propiedad .datos
+    setInversiones(Array.isArray(invResp.datos) ? invResp.datos : []);
+    setMonedas(Array.isArray(monResp.datos) ? monResp.datos : []);
+
+  } catch (err) {
+    setError('Error al cargar inversiones');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,10 +50,35 @@ export default function Inversiones() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await inversionesAPI.create(formData);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError(null);
+
+  try {
+    const payload = {
+      idMoneda: parseInt(formData.idMoneda, 10),
+      capitalInicial: parseFloat(formData.capitalInicial),
+      tasaInteres: parseFloat(formData.tasaInteres),
+      plazoDias: parseInt(formData.plazoDias, 10),
+      modalidadPago: formData.modalidadPago,
+      observaciones: formData.observaciones.trim() || null,
+    };
+
+    if (
+      !payload.idMoneda ||
+      isNaN(payload.capitalInicial) ||
+      isNaN(payload.tasaInteres) ||
+      isNaN(payload.plazoDias)
+    ) {
+      setError('Por favor completa todos los campos numéricos correctamente.');
+      return;
+    }
+
+    const response = await inversionesAPI.create(payload);
+
+    if (response.exitoso) {
+      fetchData();
+      setShowForm(false);
       setFormData({
         idMoneda: '',
         capitalInicial: '',
@@ -58,12 +87,14 @@ export default function Inversiones() {
         modalidadPago: 'MENSUAL',
         observaciones: '',
       });
-      setShowForm(false);
-      fetchData();
-    } catch (err) {
-      setError('Error al crear inversión');
+    } else {
+      setError(response.mensaje || 'Error al crear inversión');
     }
-  };
+  } catch (err) {
+    setError(err.message || 'Error al crear inversión');
+  }
+};
+
 
   const handleDelete = async (id) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar esta inversión?')) {
@@ -100,7 +131,7 @@ export default function Inversiones() {
     <main className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 bg-sky-100 rounded-lg p-6">
           <div>
             <h1 className="text-4xl font-bold text-gray-800 flex items-center space-x-2">
               <TrendingUp className="text-teal-600" />
@@ -140,7 +171,7 @@ export default function Inversiones() {
                     <option value="">Selecciona una moneda</option>
                     {monedas.map((m) => (
                       <option key={m.idMoneda} value={m.idMoneda}>
-                        {m.nombreMoneda}
+                        {m.simbolo} - {m.nombreMoneda}
                       </option>
                     ))}
                   </select>
@@ -264,7 +295,7 @@ export default function Inversiones() {
                           {getMonedaNombre(inv.idMoneda)}
                         </h3>
                         <p className="text-sm text-gray-600">
-                          Capital: Q{inv.capitalInicial?.toLocaleString('es-GT')}
+                          Capital: {inv.simbolo} {inv.capitalInicial.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2,}) }
                         </p>
                       </div>
                     </div>
@@ -281,7 +312,7 @@ export default function Inversiones() {
                       <div>
                         <p className="text-xs text-gray-600">Total a Recibir</p>
                         <p className="font-semibold text-green-600">
-                          Q{inv.montoTotalARecibir?.toLocaleString('es-GT')}
+                          {inv.simbolo} {inv.montoTotalARecibir?.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2,})}
                         </p>
                       </div>
                       <div>
