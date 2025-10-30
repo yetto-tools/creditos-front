@@ -17,21 +17,31 @@ export default function Dashboard({ user }) {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        
-        const [inversiones, prestamos, saldo] = await Promise.all([
-          inversionesAPI.getByUsuario(user.idUsuario).catch(() => []),
-          prestamosAPI.getByUsuario(user.idUsuario).catch(() => []),
-          saldoAPI.getByUsuario(user.idUsuario).catch(() => ({ saldo: 0 })),
+
+        // Llamadas simultáneas con manejo de error individual
+        const [invResp, presResp, saldoResp] = await Promise.all([
+          inversionesAPI.getByUsuario(user.idUsuario).catch(() => ({ datos: [] })),
+          prestamosAPI.getByUsuario(user.idUsuario).catch(() => ({ datos: [] })),
+          saldoAPI.getByUsuario(user.idUsuario).catch(() => ({ datos: { saldo: 0 } })),
         ]);
 
-        const inversion = Array.isArray(inversiones) ? inversiones : [];
-        const prestamo = Array.isArray(prestamos) ? prestamos : [];
+        // Extraer arrays y datos
+        const inversiones = Array.isArray(invResp?.datos) ? invResp.datos : [];
+        const prestamos = Array.isArray(presResp?.datos) ? presResp.datos : [];
+        const saldo = saldoResp?.datos?.saldo ?? 0;
 
+        // Calcular estadísticas
         setStats({
-          totalInversiones: inversion.reduce((sum, inv) => sum + (inv.montoTotalARecibir || 0), 0),
-          totalPrestamos: prestamo.reduce((sum, pres) => sum + (pres.montoTotalARecibir || 0), 0),
-          saldoDisponible: saldo.saldo || 0,
-          inversionesActivas: inversion.filter(inv => inv.estado === 'VIGENTE').length,
+          totalInversiones: inversiones.reduce(
+            (sum, inv) => sum + (inv.montoTotalARecibir || 0),
+            0
+          ),
+          totalPrestamos: prestamos.reduce(
+            (sum, pres) => sum + (pres.montoTotalARecibir || 0),
+            0
+          ),
+          saldoDisponible: saldo,
+          inversionesActivas: inversiones.filter((inv) => inv.estado === 'VIGENTE').length,
         });
       } catch (err) {
         console.error('Error al cargar estadísticas:', err);
@@ -62,16 +72,19 @@ export default function Dashboard({ user }) {
           <h1 className="text-4xl font-bold text-gray-800 mb-2">
             Bienvenido, {user?.nombreCompleto || 'Usuario'}
           </h1>
-          <p className="text-gray-600">Panel de control - Sistema de Operaciones Financieras</p>
+          <p className="text-gray-600">
+            Panel de control - Sistema de Operaciones Financieras
+          </p>
         </div>
 
-        {/* Estadísticas */}
+        {/* Alertas */}
         {error && (
           <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 rounded-lg text-yellow-800">
             {error}
           </div>
         )}
 
+        {/* Estadísticas */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {[1, 2, 3, 4].map((i) => (
@@ -130,11 +143,15 @@ export default function Dashboard({ user }) {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Nombre Completo</p>
-                <p className="text-lg font-semibold text-gray-800">{user?.nombreCompleto}</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  {user?.nombreCompleto}
+                </p>
               </div>
               <div>
                 <p className="text-sm text-gray-600">ID Usuario</p>
-                <p className="text-lg font-semibold text-gray-800 font-mono">{user?.idUsuario}</p>
+                <p className="text-lg font-semibold text-gray-800 font-mono">
+                  {user?.idUsuario}
+                </p>
               </div>
             </div>
           </Card>
@@ -175,11 +192,15 @@ export default function Dashboard({ user }) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-900 mb-2">Inversiones</h4>
-                  <p className="text-sm text-blue-800">Gestiona tus inversiones y proyecta tus ganancias.</p>
+                  <p className="text-sm text-blue-800">
+                    Gestiona tus inversiones y proyecta tus ganancias.
+                  </p>
                 </div>
                 <div className="bg-orange-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-orange-900 mb-2">Préstamos</h4>
-                  <p className="text-sm text-orange-800">Controla tus préstamos y pagos programados.</p>
+                  <p className="text-sm text-orange-800">
+                    Controla tus préstamos y pagos programados.
+                  </p>
                 </div>
               </div>
             </div>

@@ -23,8 +23,8 @@ export default function LoginPage({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validación básica
+
+    // 🔹 Validación básica
     if (!formData.usuario.trim()) {
       setError('Por favor ingresa tu usuario');
       return;
@@ -39,39 +39,40 @@ export default function LoginPage({ onLogin }) {
 
     try {
       console.log('Intentando login con:', formData.usuario);
-      
+
+      // 🔹 Llamada al backend
       const response = await authAPI.login(formData.usuario, formData.contrasena);
-      
-      console.log('Login exitoso:', response);
-      
-      if (!response || !response.datos.token) {
+      console.log('Respuesta del login:', response);
+
+      // 🔹 Validar estructura
+      if (!response?.exitoso || !response.datos?.token) {
         throw new Error('Respuesta inválida del servidor');
       }
 
-      // Guardar datos
-      onLogin(response.datos.token, {
-        idUsuario: response.idUsuario,
-        usuario: response.usuario,
-        nombreCompleto: response.nombreCompleto,
-      });
-      
-      // Limpiar formulario
+      // 🔹 Extraer datos del backend
+      const { idUsuario, usuario, nombreCompleto, token } = response.datos;
+
+      if (!idUsuario || !usuario) {
+        throw new Error('Datos de usuario incompletos en la respuesta');
+      }
+
+      // 🔹 Guardar datos en localStorage (a través de App.jsx -> onLogin)
+      onLogin(token, { idUsuario, usuario, nombreCompleto });
+
+      // 🔹 Limpiar formulario
       setFormData({
         usuario: '',
         contrasena: '',
       });
 
-      // Redirigir después de un pequeño delay
+      // 🔹 Redirigir después de un pequeño delay
       setTimeout(() => {
         navigate('/', { replace: true });
       }, 300);
 
     } catch (err) {
       console.error('Error de login:', err);
-      setError(
-        err.message || 
-        'Error al iniciar sesión. Verifica tus credenciales.'
-      );
+      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
       setFormData((prev) => ({
         ...prev,
         contrasena: '',
